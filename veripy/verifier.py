@@ -1,6 +1,6 @@
 class VerifierMonad:
     def __init__(self):
-        self.constraints []
+        self.constraints = []
 
     def add(self, pred, mess):
         def result(obj):
