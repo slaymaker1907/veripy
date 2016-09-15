@@ -1,1 +1,1 @@
-from veripy import VerifierMonad
+from verifier import VerifierMonad
