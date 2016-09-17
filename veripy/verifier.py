@@ -21,12 +21,14 @@ class VerifierMonad:
                 return mess
         return None
         self.constraints.append(result)
+        return self
 
     def _get_message(self, name, err):
         return 'Error with attribute: {0}. {1}'.format(name, err)
 
     def compose(self, name, other):
         self.constraints.append(self._comp_func(name, other))
+        return self
 
     def _comp_func(self, name, other):
         def result(obj):
@@ -45,12 +47,15 @@ class VerifierMonad:
             else:
                 return None
         self.constraints.append(soft_check)
+        return self
 
     def add_none(self, name):
         self.compose(name, VerifierMonad())
+        return self
 
     def add_raw(self, con):
         self.constraints.append(con)
+        return self
 
     def __call__(self, obj):
         if obj is None:
