@@ -1,5 +1,10 @@
 from collections.abc import Sequence, Mapping, Callable
 
+class VerificationException(Exception):
+    def __init__(self, bad_ob, *args, **vargs):
+        super().__init__(*args, **vargs)
+        self.bad_ob = bad_ob
+
 def getgen(ob, name):
     if isinstance(ob, Mapping):
         result = ob.get(name, None)
@@ -73,3 +78,8 @@ class VerifierMonad:
             if temp is not None:
                 return temp
         return None
+
+    def check(self, ob):
+        result = self(ob)
+        if result is not None:
+            raise VerificationException(ob, result)
