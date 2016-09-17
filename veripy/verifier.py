@@ -1,4 +1,4 @@
-from collections.abc import Sequence, Mapping, Callable
+from collections.abc import Sequence, Mapping, Callable, Iterable
 
 class VerificationException(Exception):
     def __init__(self, bad_ob, *args, **vargs):
@@ -69,6 +69,24 @@ class VerifierMonad:
     def clone(self):
         result = VerifierMonad()
         result.constraints = list(self.constraints)
+
+    def to_iter(self):
+        def make_iter(con):
+            def result(lst):
+                for item in lst:
+                    temp = con(lst)
+                    if temp is not None:
+                        return temp
+                return None
+        def check_type(ob):
+            if not isinstance(ob, Iterable):
+                return 'Object must be iterable.'
+            else:
+                return None
+        constraints = [check_type] + [make_iter(con) for con in self.constraints]
+        result = VerifierMonad()
+        result.constraints = constraints
+        return result
 
     def __call__(self, obj):
         if obj is None:
