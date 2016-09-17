@@ -57,6 +57,10 @@ class VerifierMonad:
         self.constraints.append(con)
         return self
 
+    def clone(self):
+        result = VerifierMonad()
+        result.constraints = list(self.constraints)
+
     def __call__(self, obj):
         if obj is None:
             return 'Object may not be null.'
