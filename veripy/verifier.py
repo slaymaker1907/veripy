@@ -28,7 +28,6 @@ class VerifierMonad:
         def result(obj):
             if not pred(obj):
                 return mess
-        return None
         self.constraints.append(result)
         return self
 
