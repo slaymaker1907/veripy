@@ -78,6 +78,7 @@ class VerifierMonad:
                     if temp is not None:
                         return temp
                 return None
+            return result
         def check_type(ob):
             if not isinstance(ob, Iterable):
                 return 'Object must be iterable.'
