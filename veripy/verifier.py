@@ -40,6 +40,7 @@ class VerifierMonad:
         return self
 
     def _comp_func(self, name, other):
+        assert other != None
         def result(obj):
             temp = other(getgen(obj, name))
             if temp is not None:
