@@ -1,15 +1,19 @@
-from collections.abc import Sequence, Mapping
+from collections.abc import Sequence, Mapping, Callable
 
 def getgen(ob, name):
     if isinstance(ob, Mapping):
-        return ob.get(name, None)
+        result = ob.get(name, None)
     elif isinstance(ob, Sequence) and isinstance(name, int):
         try:
-            return ob[name]
+            result = ob[name]
         except IndexError:
-            return None
+            result = None
     else:
-        return getattr(ob, name, None)
+        result = getattr(ob, name, None)
+    if result is not None and isinstance(result, Callable):
+        return result()
+    else:
+        return result
 
 class VerifierMonad:
     def __init__(self):
