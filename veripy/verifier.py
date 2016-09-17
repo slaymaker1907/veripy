@@ -101,3 +101,21 @@ class VerifierMonad:
         result = self(ob)
         if result is not None:
             raise VerificationException(ob, result)
+
+    def add_eq(self, attr_name, value):
+        def constr(ob):
+            if ob != value:
+                return 'Expected value {0} but was {1}'.format(value, ob)
+            else:
+                return None
+        result = VerifierMonad().add_raw(constr)
+        return self.compose(attr_name, result)
+
+    def add_neq(self, attr_name, value):
+        def constr(ob):
+            if ob == value:
+                return 'Value should not be equal to {0} but was equal.'.format(value)
+            else:
+                return None
+        result = VerifierMonad().add_raw(constr)
+        return self.compose(attr_name, result)
