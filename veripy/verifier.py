@@ -36,6 +36,9 @@ class VerifierMonad:
     def add_none(self, name):
         self.compose(name, VerifierMonad())
 
+    def add_raw(self, con):
+        self.constraints.append(con)
+
     def __call__(self, obj):
         if obj is None:
             return 'Object may not be null.'
