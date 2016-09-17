@@ -1,3 +1,16 @@
+from collections.abc import Sequence, Mapping
+
+def getgen(ob, name):
+    if isinstance(ob, Mapping):
+        return ob.get(name, None)
+    elif isinstance(ob, Sequence) and isinstance(name, int):
+        try:
+            return ob[name]
+        except IndexError:
+            return None
+    else:
+        return getattr(ob, name, None)
+
 class VerifierMonad:
     def __init__(self):
         self.constraints = []
@@ -17,7 +30,7 @@ class VerifierMonad:
 
     def _comp_func(self, name, other):
         def result(obj):
-            temp = other(obj)
+            temp = other(getgen(obj, name))
             if temp is not None:
                 return self._get_message(name, temp)
             else:
