@@ -74,7 +74,7 @@ class VerifierMonad:
         def make_iter(con):
             def result(lst):
                 for item in lst:
-                    temp = con(lst)
+                    temp = con(item)
                     if temp is not None:
                         return temp
                 return None
