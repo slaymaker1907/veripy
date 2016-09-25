@@ -69,6 +69,7 @@ class VerifierMonad:
     def clone(self):
         result = VerifierMonad()
         result.constraints = list(self.constraints)
+        return result
 
     def to_iter(self):
         def make_iter(con):
