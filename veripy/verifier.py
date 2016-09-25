@@ -85,9 +85,8 @@ class VerifierMonad:
                 return 'Object must be iterable.'
             else:
                 return None
-        constraints = [check_type] + [make_iter(con) for con in self.constraints]
-        result = VerifierMonad()
-        result.constraints = constraints
+        result = VerifierMonad().typecheck(Iterable)
+        result.constraints += [make_iter(con) for con in self.constraints]
         return result
 
     def __call__(self, obj):
@@ -112,6 +111,13 @@ class VerifierMonad:
                 return None
         result = VerifierMonad().add_raw(constr)
         return self.compose(attr_name, result)
+
+    def typecheck(self, exp_type):
+        def constr(ob):
+            if not isinstance(ob, exp_type):
+                return 'Object must be of type: {0} but was: {1}'.format(exp_type.__name__, type(ob).__name__)
+            return None
+        return self.constraints.append(typecheck)
 
     def add_neq(self, attr_name, value):
         def constr(ob):
