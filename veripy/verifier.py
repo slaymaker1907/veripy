@@ -117,7 +117,8 @@ class VerifierMonad:
             if not isinstance(ob, exp_type):
                 return 'Object must be of type: {0} but was: {1}'.format(exp_type.__name__, type(ob).__name__)
             return None
-        return self.constraints.append(constr)
+        self.constraints.append(constr)
+        return self
 
     def add_neq(self, attr_name, value):
         def constr(ob):
